@@ -10,16 +10,15 @@ export default function RestaurantItem({ restaurant }) {
       <View style={styles.row}>
     
       <Text style={styles.title}>{restaurant.name}</Text>
+      <View style={styles.rating_view}>
       <Text style={styles.rating}>{restaurant.rating}</Text>
+      </View>
       </View>
       <View>
         <Text style={styles.subTitle}>
           ${restaurant.deliveryFee}&#8226;
           {restaurant.minDeliveryTime} - {restaurant.maxDeliveryTime} minutes
         </Text>
-        
-        
-        
       </View>
     </TouchableOpacity>
     
@@ -30,8 +29,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 100,
     borderWidth: 1,
-    marginVertical: 10,
-    padding:10
+    // marginVertical: 10,
+    // padding:10
   },
   image: {
     width: "100%",
@@ -55,10 +54,17 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     alignItems:'center',
   },
+  rating_view:{
+    width:30, 
+    height:30,
+    alignItems:'center',
+    justifyContent:'center',
+    borderRadius:20,
+    backgroundColor:'#d6d2d2',
+    marginLeft:'auto'
+  },
   rating:{
-    marginLeft:"auto",
     marginHorizontal:5,
     fontWeight:'bold',
-  
   }
 });
