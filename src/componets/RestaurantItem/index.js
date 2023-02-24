@@ -1,11 +1,12 @@
 import react from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
-
+import { useNavigation } from "@react-navigation/native";
 export default function RestaurantItem({ restaurant }) {
+  const navigation = useNavigation();
   return (
     // Container
    
-    <TouchableOpacity style={StyleSheet.container} activeOpacity={0.6}>
+    <TouchableOpacity style={StyleSheet.container} activeOpacity={0.6} onPress={()=>navigation.navigate('Restaurant')}>
       <Image style={styles.image} source={{ uri: restaurant.image }} />
       <View style={styles.row}>
     

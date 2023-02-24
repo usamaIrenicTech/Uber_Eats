@@ -10,15 +10,17 @@ import { AntDesign } from "@expo/vector-icons";
 import restaurant from "../../data/restaurants.json";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import BasketDishItem from "../../componets/BasketDishItem";
+import { useNavigation } from "@react-navigation/native";
 const restaurants = restaurant[0];
 export default function Basket() {
+  const navigation = useNavigation();
   const [quantity, setQuantity] = useState(0);
   const getTotal = () => {
     return (restaurants.d * quantity).toFixed(2);
   };
   return (
     <View style={styles.parent_view}>
-      <TouchableOpacity style={styles.arrow_left} activeOpacity={0.6}>
+      <TouchableOpacity style={styles.arrow_left} activeOpacity={0.6} onPress={()=>navigation.goBack()}>
         <Ionicons name="arrow-back-sharp" size={22} color="#000" />
       </TouchableOpacity>
       {/* ITEM NAME */}
@@ -56,6 +58,7 @@ const styles = StyleSheet.create({
   },
   arrow_left: {
     left: 10,
+    marginTop:10
   },
   name: {
     fontSize: 25,
@@ -64,9 +67,9 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   item_title: {
-    fontSize: 17,
+    fontSize: 19,
     color: "#000",
-    fontWeight: "500",
+    fontWeight: "bold",
     marginVertical: 10,
     marginHorizontal: 10,
   },
@@ -92,27 +95,27 @@ const styles = StyleSheet.create({
   },
   subTotal_view: {
     flexDirection: "row",
-    marginHorizontal: 8,
+    marginHorizontal: 15,
     marginTop: 15,
   },
   subTotal: {
     fontWeight: "600",
     color: "#000",
-    fontSize: 17,
+    fontSize: 15,
   },
   sub_Price: {
     marginLeft: "auto",
   },
   total_view: {
     flexDirection: "row",
-    marginHorizontal: 8,
+    marginHorizontal: 15,
     marginTop: 5,
     marginBottom: 20,
   },
   total: {
     fontWeight: "600",
     color: "#000",
-    fontSize: 17,
+    fontSize: 18,
   },
   total_Price: {
     marginLeft: "auto",

@@ -1,8 +1,8 @@
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import React from "react";
 import RestaurantItem from "../../componets/RestaurantItem/index";
-
-export default function Home({ restaurant }) {
+import restaurant from '../../data/restaurants.json';
+export default function Home() {
   return (
     <View style={styles.parent_view}>
       <FlatList
@@ -16,5 +16,7 @@ export default function Home({ restaurant }) {
   );
 }
 const styles = StyleSheet.create({
-  parent_view: {},
+  parent_view: {
+    marginHorizontal:10
+  },
 });

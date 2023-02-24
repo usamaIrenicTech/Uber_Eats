@@ -3,15 +3,17 @@ import React, {useState} from "react";
 import { AntDesign } from "@expo/vector-icons";
 import restaurant from "../../data/restaurants.json";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
 const dish = restaurant[0].dishes[0];
-export default function MenuItemDetails() {
+export default function DishDetails() {
+  const navigation = useNavigation();
   const [quantity, setQuantity] = useState(0)
   const getTotal = () =>{
     return(dish.price*quantity).toFixed(2);
   }
   return (
     <View style={styles.parent_view}>
-      <TouchableOpacity style={styles.arrow_left} activeOpacity={0.6}>
+      <TouchableOpacity style={styles.arrow_left} activeOpacity={0.6} onPress={()=>navigation.goBack()}>
         <Ionicons name="arrow-back-sharp" size={22} color="#000" />
       </TouchableOpacity>
       <Text style={styles.name}>{dish.name}</Text>
@@ -26,7 +28,7 @@ export default function MenuItemDetails() {
           <AntDesign name="pluscircleo" size={60} color="black" />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.button_view} activeOpacity={0.7}>
+      <TouchableOpacity style={styles.button_view} activeOpacity={0.7} onPress={()=>navigation.navigate('Basket')}>
         <Text style={styles.button}>add {quantity} to baskets &#8226; ($ {getTotal()}) </Text>
       </TouchableOpacity>
     </View>

@@ -1,9 +1,15 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
 export default function DistListItem({ dish }) {
+  const navigation = useNavigation();
   return (
-    <View style={styles.parent_view}>
+    <TouchableOpacity
+      style={styles.parent_view}
+      activeOpacity={0.7}
+      onPress={() => navigation.navigate("Dish")}
+    >
       <View style={{ flex: 1 }}>
         <Text style={styles.name}>{dish.name}</Text>
         <Text style={styles.description} numberOfLines>
@@ -12,11 +18,9 @@ export default function DistListItem({ dish }) {
         <Text style={styles.price}>$ {dish.price}</Text>
       </View>
       {dish.image && (
-        <TouchableOpacity activeOpacity={0.7}>
         <Image source={{ uri: dish.image }} style={styles.image} />
-        </TouchableOpacity>
       )}
-    </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({
