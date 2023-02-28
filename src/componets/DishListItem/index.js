@@ -3,6 +3,7 @@ import React from "react";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
 export default function DistListItem({ dish }) {
+  // console.warn(dish.name)
   const navigation = useNavigation();
   return (
     <TouchableOpacity

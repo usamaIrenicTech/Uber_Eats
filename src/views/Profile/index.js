@@ -1,10 +1,93 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, TextInput, StyleSheet, Button, Pressable, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+// import { Auth } from "aws-amplify";
+import Amplify, { Auth } from 'aws-amplify';
+export default function Profile () {
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [lat, setLat] = useState("0");
+  const [lng, setLng] = useState("0");
 
-export default function Profile() {
+  const onSave = () => {};
+
   return (
-    <View style={{alignItems:'center', justifyContent:'center'}}>
-      <Text>Profile Screen</Text>
-    </View>
-  )
-}
+    <SafeAreaView>
+      <Text style={styles.title}>Profile</Text>
+      <TextInput
+        value={name}
+        onChangeText={setName}
+        placeholder="Name"
+        style={styles.input}
+      />
+      <TextInput
+        value={address}
+        onChangeText={setAddress}
+        placeholder="Address"
+        style={styles.input}
+      />
+      <TextInput
+        value={lat}
+        onChangeText={setLat}
+        placeholder="Latitude"
+        style={styles.input}
+        keyboardType="numeric"
+      />
+      <TextInput
+        value={lng}
+        onChangeText={setLng}
+        placeholder="Longitude"
+        style={styles.input}
+      />
+     <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
+  <Text style={styles.btn_text}>Save</Text>
+  </TouchableOpacity>
+   <TouchableOpacity onPress={()=>Auth.signOut()} style={styles.btn} activeOpacity={0.7}>
+  <Text style={styles.btn_text}>Log Out</Text>
+   </TouchableOpacity>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+    margin: 10,
+  },
+  input: {
+    margin: 10,
+    backgroundColor: "white",
+    padding: 15,
+    borderRadius: 5,
+  },
+  btn:{
+    padding:15,
+    backgroundColor:'#000',
+    margin:10,
+    marginLeft:10,
+    marginRight:10,
+    borderRadius:5
+  },
+  btn_text:{
+    color:'#fff',
+    fontSize:18,
+    fontWeight:'700',
+    textAlign:'center'
+  },
+  // signOut_btn:{
+  //   padding:15,
+  //   backgroundColor:'#000',
+  //   margin:10,
+  //   marginLeft:10,
+  //   marginRight:10,
+  //   borderRadius:5
+  // },
+  // signOut_text:{
+  //   color:'#fff',
+  //   fontSize:18,
+  //   fontWeight:'700',
+  //   textAlign:'center'
+  // }
+});

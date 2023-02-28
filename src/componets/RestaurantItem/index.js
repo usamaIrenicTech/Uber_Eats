@@ -6,19 +6,18 @@ export default function RestaurantItem({ restaurant }) {
   return (
     // Container
    
-    <TouchableOpacity style={StyleSheet.container} activeOpacity={0.6} onPress={()=>navigation.navigate('Restaurant')}>
+    <TouchableOpacity style={StyleSheet.container} activeOpacity={0.6} onPress={()=>navigation.navigate('Restaurant', {id:restaurant.id})}>
       <Image style={styles.image} source={{ uri: restaurant.image }} />
       <View style={styles.row}>
     
       <Text style={styles.title}>{restaurant.name}</Text>
       <View style={styles.rating_view}>
-      <Text style={styles.rating}>{restaurant.rating}</Text>
+      <Text style={styles.rating}>{restaurant.rating.toFixed(1)}</Text>
       </View>
       </View>
       <View>
         <Text style={styles.subTitle}>
-          ${restaurant.deliveryFee}&#8226;
-          {restaurant.minDeliveryTime} - {restaurant.maxDeliveryTime} minutes
+          $ {restaurant.deliveryFee.toFixed(1)} &#8226; {restaurant.minDeliveryTime} - {restaurant.maxDeliveryTime} minutes
         </Text>
       </View>
     </TouchableOpacity>
