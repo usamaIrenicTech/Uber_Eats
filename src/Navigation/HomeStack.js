@@ -14,7 +14,7 @@ const HomeStackNavigator = () => {
         options={{ headerShown: false }}
       />
       <HomeStack.Screen
-        name="Dish"
+        name="DishDetails"
         component={DishDetailScreen}
         options={{ headerShown: false }}
       />

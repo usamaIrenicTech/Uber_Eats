@@ -12,6 +12,7 @@ import RootNavigator from "./src/Navigation/StackNavigator";
 import { Amplify, Analytics } from 'aws-amplify';
 import awsconfig from './src/aws-exports';
 import {withAuthenticator} from "aws-amplify-react-native";
+import AuthContextProvider from "./src/Contexts/AuthContext";
 // import Amplify, { Auth } from 'aws-amplify';
 Amplify.configure({
   ...awsconfig,
@@ -26,8 +27,9 @@ Amplify.configure({
    
     <SafeAreaView style={styles.container}>
        <NavigationContainer independent>
+         <AuthContextProvider>
       <RootNavigator/>
-
+      </AuthContextProvider>
     </NavigationContainer>
       {/* <StatusBar style="auto" /> */}
     </SafeAreaView>

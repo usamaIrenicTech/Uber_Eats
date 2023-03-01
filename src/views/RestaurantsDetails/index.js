@@ -37,7 +37,7 @@ export default function RestaurantItem() {
   DataStore.query(Dishes).then((dish)=>console.warn(dish))
   useEffect(() => {
     DataStore.query(Restaurants, id).then(setRestaurant);
-    DataStore.query(Dishes, dish=>dish.restaurantsID("EQ", id).then(setDishes))
+    DataStore.query(Dishes, dish=>dish.restaurantsID("eq", id).then(setDishes))
   
    getDishes()
   }, []);

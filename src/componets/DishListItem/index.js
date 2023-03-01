@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 
 export default function DistListItem({ dish }) {
   // console.warn(dish.name)
@@ -9,7 +9,7 @@ export default function DistListItem({ dish }) {
     <TouchableOpacity
       style={styles.parent_view}
       activeOpacity={0.7}
-      onPress={() => navigation.navigate("Dish")}
+      onPress={() => navigation.navigate("DishDetails", {id: dish.id})}
     >
       <View style={{ flex: 1 }}>
         <Text style={styles.name}>{dish.name}</Text>

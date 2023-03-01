@@ -1,15 +1,58 @@
-import { View, Text, TextInput, StyleSheet, Button, Pressable, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Button,
+  Pressable,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-// import { Auth } from "aws-amplify";
-import Amplify, { Auth } from 'aws-amplify';
-export default function Profile () {
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [lat, setLat] = useState("0");
-  const [lng, setLng] = useState("0");
+import { DataStore, Auth } from "aws-amplify";
+import { useAuthContext } from "../../Contexts/AuthContext";
+import { User } from "../../models";
 
-  const onSave = () => {};
+export default function Profile() {
+  const [name, setName] = useState(dbUser?.name || "");
+  const [address, setAddress] = useState(dbUser?.address || "");
+  const [lat, setLat] = useState(dbUser?.lat  || "0");
+  const [lng, setLng] = useState(dbUser?.lng   || "0");
+  const { sub, setDbUser, dbUser } = useAuthContext();
+  const onSave = async () => {
+    if(dbUser){
+      await updateUser();
+    }else{
+      await createUser();
+    }
+  };
+  const createUser = async () => {
+    try {
+      const user = await DataStore.save(
+        new User({
+          name,
+          address,
+          lat: parseFloat(lat),
+          lng: parseFloat(lng),
+          sub,
+        })
+      );
+      setDbUser(user);
+      console.warn(user);
+    } catch (e) {
+      Alert.alert("Error", e.message);
+    }
+  }
+  const updateUser = async () => {
+    const user = await DataStore.save(User.copyOf(dbUser, (update)=>{
+      update.name = name,
+      update.address = address,
+      update.lat = parseFloat(lat),
+      update.lng = parseFloat(lng)
+    }))
+    setDbUser(user)
+  }
 
   return (
     <SafeAreaView>
@@ -39,15 +82,19 @@ export default function Profile () {
         placeholder="Longitude"
         style={styles.input}
       />
-     <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
-  <Text style={styles.btn_text}>Save</Text>
-  </TouchableOpacity>
-   <TouchableOpacity onPress={()=>Auth.signOut()} style={styles.btn} activeOpacity={0.7}>
-  <Text style={styles.btn_text}>Log Out</Text>
-   </TouchableOpacity>
+      <TouchableOpacity style={styles.btn} activeOpacity={0.7} onPress={onSave}>
+        <Text style={styles.btn_text}>Save</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => Auth.signOut()}
+        style={styles.btn}
+        activeOpacity={0.7}
+      >
+        <Text style={styles.btn_text}>Log Out</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   title: {
@@ -62,19 +109,19 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 5,
   },
-  btn:{
-    padding:15,
-    backgroundColor:'#000',
-    margin:10,
-    marginLeft:10,
-    marginRight:10,
-    borderRadius:5
+  btn: {
+    padding: 15,
+    backgroundColor: "#000",
+    margin: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    borderRadius: 5,
   },
-  btn_text:{
-    color:'#fff',
-    fontSize:18,
-    fontWeight:'700',
-    textAlign:'center'
+  btn_text: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "700",
+    textAlign: "center",
   },
   // signOut_btn:{
   //   padding:15,
