@@ -8,6 +8,7 @@ import {
   ScrollView,
   FlatList,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import DistListItem from "../../componets/DishListItem/index";
 // import restaurants from "../../data/restaurants.json";
@@ -16,44 +17,64 @@ import Header from "./Header";
 import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
-import { DataStore } from '@aws-amplify/datastore';
+import { DataStore } from "aws-amplify";
 import { Restaurants, Dishes } from "../../models";
+import { useBasketContext } from "../../Contexts/BasketContext";
+
 
 export default function RestaurantItem() {
-  const navigation = useNavigation();
-  const route = useRoute();
   const [restaurant, setRestaurant] = useState([]);
   const [dishes, setDishes] = useState([]);
 
-  // console.warn(dishes);
-  const id = route.params?.id;
-  // console.warn(id)
-  const getDishes = async() =>{
-    const dish = await DataStore.query(Dishes);
-    
-    setDishes(dish)
-    // console.warn(dish);
-  }
-  DataStore.query(Dishes).then((dish)=>console.warn(dish))
+  const navigation = useNavigation();
+  const route = useRoute();
+  const {  setRestaurant: setBasketRestaurant } = useBasketContext();
+  // console.log(dishes);
+  // GET ID FROM HOME
+  const id = route?.params?.id;
+  console.log("RestauantsID-->", id);
+
+  // GET RESTAURANTS WITH ID
+  const getRestaurants = async () => {
+    try {
+      const restaurant = await DataStore.query(Restaurants, id);
+      setRestaurant(restaurant);
+      const dishes = await DataStore.query(Dishes);
+      setDishes(dishes);
+    } catch (e) {
+      Alert.alert("Error", e.mesage);
+    }
+  };
+
+  const dish = dishes.filter((item) => item.restaurantsID == id);
+  console.log("dishID-->",dishes.filter((item) => item.restaurantsID)) 
+
   useEffect(() => {
-    DataStore.query(Restaurants, id).then(setRestaurant);
-    DataStore.query(Dishes, dish=>dish.restaurantsID("eq", id).then(setDishes))
-  
-   getDishes()
-  }, []);
+    if (!id) {
+      return;
+    }
+    setBasketRestaurant(null);
+    // GET RESTAURANTS WITH ID
+    getRestaurants();
+  }, [id]);
+
+  useEffect(() => {
+    setBasketRestaurant(restaurant);
+  }, [restaurant]);
+
   if (!restaurant) {
     return <ActivityIndicator size={"large"} color={"gray"} />;
   }
+
   return (
-    
     <View style={styles.container} activeOpacity={0.6}>
       {/* RESTAURANT DISHES */}
       <FlatList
-        data={dishes}
+        data={dish}
         // keyExtractor={(item)=>item.name}
         ListHeaderComponent={() => <Header restaurant={restaurant} />}
         renderItem={({ item, index }) => {
-          return <DistListItem dish={item} />
+          return <DistListItem dishes={item} />;
         }}
         showsVerticalScrollIndicator={false}
       />

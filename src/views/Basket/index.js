@@ -5,19 +5,26 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import restaurant from "../../data/restaurants.json";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import BasketDishItem from "../../componets/BasketDishItem";
 import { useNavigation } from "@react-navigation/native";
+import { Basket, BasketDis } from "../../models";
+import { DataStore } from "aws-amplify";
 const restaurants = restaurant[0];
-export default function Basket() {
+export default function Baskets() {
+  const [basket, setBasket] = useState([])
   const navigation = useNavigation();
   const [quantity, setQuantity] = useState(0);
   const getTotal = () => {
     return (restaurants.d * quantity).toFixed(2);
   };
+  console.log("BasketItem-->", basket)
+  // useEffect(()=>{
+  //   DataStore.query(Basket).then(setBasket)
+  // })
   return (
     <View style={styles.parent_view}>
       <TouchableOpacity style={styles.arrow_left} activeOpacity={0.6} onPress={()=>navigation.goBack()}>

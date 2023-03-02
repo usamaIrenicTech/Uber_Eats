@@ -5,8 +5,7 @@ import RestaurantItem from "../../componets/RestaurantItem/index";
 import { Restaurants } from "../../models";
 import { DataStore } from "aws-amplify";
 export default function Home() {
-  const [restaurant, setRestaurant] = useState([])
-  // console.warn(restaurant)
+  const [restaurant, setRestaurant] = useState([]);
   useEffect(()=>{
     DataStore.query(Restaurants).then(setRestaurant);
   }, [])

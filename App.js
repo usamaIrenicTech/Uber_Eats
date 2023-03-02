@@ -9,28 +9,29 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import RootNavigator from "./src/Navigation/StackNavigator";
-import { Amplify, Analytics } from 'aws-amplify';
-import awsconfig from './src/aws-exports';
-import {withAuthenticator} from "aws-amplify-react-native";
+import { Amplify, Analytics } from "aws-amplify";
+import awsconfig from "./src/aws-exports";
+import { withAuthenticator } from "aws-amplify-react-native";
 import AuthContextProvider from "./src/Contexts/AuthContext";
+import BasketContextProvider from "./src/Contexts/BasketContext";
 // import Amplify, { Auth } from 'aws-amplify';
 Amplify.configure({
   ...awsconfig,
-  Analytics: { 
-    disabled: true
-  }
+  Analytics: {
+    disabled: true,
+  },
 });
 
- function App() {
-
+function App() {
   return (
-   
     <SafeAreaView style={styles.container}>
-       <NavigationContainer independent>
-         <AuthContextProvider>
-      <RootNavigator/>
-      </AuthContextProvider>
-    </NavigationContainer>
+      <NavigationContainer independent>
+        <AuthContextProvider>
+          <BasketContextProvider>
+            <RootNavigator />
+          </BasketContextProvider>
+        </AuthContextProvider>
+      </NavigationContainer>
       {/* <StatusBar style="auto" /> */}
     </SafeAreaView>
   );

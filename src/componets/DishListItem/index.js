@@ -2,24 +2,26 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { useRoute, useNavigation } from "@react-navigation/native";
 
-export default function DistListItem({ dish }) {
-  // console.warn(dish.name)
+export default function DistListItem({ dishes,restaurantid }) {
+  
+ 
   const navigation = useNavigation();
   return (
+  
     <TouchableOpacity
       style={styles.parent_view}
       activeOpacity={0.7}
-      onPress={() => navigation.navigate("DishDetails", {id: dish.id})}
+      onPress={() => navigation.navigate("DishDetails", {id: dishes?.id})}
     >
       <View style={{ flex: 1 }}>
-        <Text style={styles.name}>{dish.name}</Text>
+        <Text style={styles.name}>{dishes?.name}</Text>
         <Text style={styles.description} numberOfLines>
-          {dish.description}
+          {dishes?.description}
         </Text>
-        <Text style={styles.price}>$ {dish.price}</Text>
+        <Text style={styles.price}>$ {dishes?.price}</Text>
       </View>
-      {dish.image && (
-        <Image source={{ uri: dish.image }} style={styles.image} />
+      {dishes?.image && (
+        <Image source={{ uri: dishes?.image }} style={styles.image} />
       )}
     </TouchableOpacity>
   );

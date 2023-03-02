@@ -1,5 +1,5 @@
 import react from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image,} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 export default function RestaurantItem({ restaurant }) {
   const navigation = useNavigation();

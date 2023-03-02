@@ -7,20 +7,33 @@ import { useNavigation } from "@react-navigation/native";
 import { Dishes } from "../../models";
 import { useRoute } from "@react-navigation/native";
 import { DataStore } from "aws-amplify";
+import {useBasketContext} from "../../Contexts/BasketContext"
+// const dish = restaurant[0].dishes[0];
 
-const dish = restaurant[0].dishes[0];
 export default function DishDetails() {
   const [dish, setDish] = useState([]);
+  const [quantity, setQuantity] = useState(1);
+  console.log("DishItem-->",dish)
   const navigation = useNavigation();
   const route = useRoute();
   const id = route?.params?.id;
-  const [quantity, setQuantity] = useState(0);
+  const { addDishToBasket} = useBasketContext();
   const getTotal = () => {
     return (dish.price * quantity).toFixed(2);
   };
+  const getDishes = async() => {
+    const dishItem = await DataStore.query(Dishes, id);
+    setDish(dishItem)
+  }
+
   useEffect(() => {
-    DataStore.query(Dishes, id).then(setDish);
+    getDishes();
   }, []);
+
+  const addToBasket = async () => {
+    await addDishToBasket(dish, quantity);
+    navigation.navigate("Basket")
+  }
   return (
     <View style={styles.parent_view}>
       <TouchableOpacity
@@ -53,7 +66,7 @@ export default function DishDetails() {
       <TouchableOpacity
         style={styles.button_view}
         activeOpacity={0.7}
-        onPress={() => navigation.navigate("Basket")}
+        onPress={addToBasket}
       >
         <Text style={styles.button}>
           add {quantity} to baskets &#8226; ($ {getTotal()}){" "}
