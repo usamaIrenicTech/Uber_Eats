@@ -16,19 +16,41 @@ import { User } from "../../models";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Profile() {
-  const [name, setName] = useState(dbUser?.name || "");
-  const [address, setAddress] = useState(dbUser?.address || "");
+
+  const [name, setName] = useState(dbUser?.name || "Name");
+  const [address, setAddress] = useState(dbUser?.address || "Address");
   const [lat, setLat] = useState(dbUser?.lat  || "0");
-  const [lng, setLng] = useState(dbUser?.lng   || "0");
+  const [lng, setLng] = useState(dbUser?.lng  || "0");
+
   const { sub, setDbUser, dbUser } = useAuthContext();
+
   const navigation = useNavigation();
+
   const onSave = async () => {
-    if(dbUser){
+    if (dbUser) {
       await updateUser();
-    }else{
+    } else {
       await createUser();
     }
+    navigation.goBack();
   };
+
+  const updateUser = async () => {
+    try{
+    const user = await DataStore.save(
+      User.copyOf(dbUser, (updated) => {
+        updated.name = name;
+        updated.address = address;
+        updated.lat = parseFloat(lat);
+        updated.lng = parseFloat(lng);
+      })
+    );
+    setDbUser(user);
+    }catch(e){
+      Alert.alert("Error", e.message)
+    }
+  };
+
   const createUser = async () => {
     try {
       const user = await DataStore.save(
@@ -41,21 +63,10 @@ export default function Profile() {
         })
       );
       setDbUser(user);
-      // navigation.navigate('Home')
-      // console.warn(user);
     } catch (e) {
       Alert.alert("Error", e.message);
     }
-  }
-  const updateUser = async () => {
-    const user = await DataStore.save(User.copyOf(dbUser, (update)=>{
-      update.name = name;
-      update.address = address;
-      update.lat = parseFloat(lat);
-      update.lng = parseFloat(lng);
-    }))
-    setDbUser(user)
-  }
+  };
 
   return (
     <SafeAreaView>

@@ -32,7 +32,7 @@ export default function DishDetails() {
 
   const addToBasket = async () => {
     await addDishToBasket(dish, quantity);
-    navigation.navigate("Basket")
+    navigation.goBack();
   }
   return (
     <View style={styles.parent_view}>

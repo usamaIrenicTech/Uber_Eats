@@ -49,5 +49,19 @@ export default StyleSheet.create({
     },
     rating:{
         marginRight:5
-    }
+    },
+    btn: {
+      padding: 15,
+      backgroundColor: "#000",
+      margin: 10,
+      marginLeft: 10,
+      marginRight: 10,
+      borderRadius: 5,
+    },
+    btn_text: {
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: "700",
+      textAlign: "center",
+    },
 })

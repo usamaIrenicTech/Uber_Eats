@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { useRoute, useNavigation } from "@react-navigation/native";
 
-export default function DistListItem({ dishes,restaurantid }) {
+export default function DistListItem({ dishes }) {
   
  
   const navigation = useNavigation();

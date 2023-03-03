@@ -9,19 +9,16 @@ function StackNavigator() {
   const { dbUser } = useAuthContext();
   return (
     <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="HomeTabs" component={HomeTabs} options={{headerShown:false}}/>
+        {/* <Stack.Screen name="HomeTabs" component={HomeTabs} options={{headerShown:false}}/>
+        <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown:false}}/> */}
+        {
+          dbUser? (
+            <Stack.Screen name="HomeTabs" component={HomeTabs} options={{headerShown:false}}/>
+          ):(
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown:false}}/>
 
-
-     {/* {
-       dbUser?(
-        <Stack.Screen name="HomeTabs" component={HomeTabs} options={{headerShown:false}}/>
-
-       ):(
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown:false}}/>
-         
-       )
-     } */}
+          )
+        }
       
     </Stack.Navigator>
   );

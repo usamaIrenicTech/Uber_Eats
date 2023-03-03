@@ -10,13 +10,13 @@ const OrderStatus = {
   "COMPLETED": "COMPLETED"
 };
 
-const { OrderDish, Order, BasketDis, Basket, User, Dishes, Restaurants } = initSchema(schema);
+const { Basket, OrderDish, Order, BasketDis, User, Dishes, Restaurants } = initSchema(schema);
 
 export {
+  Basket,
   OrderDish,
   Order,
   BasketDis,
-  Basket,
   User,
   Dishes,
   Restaurants,

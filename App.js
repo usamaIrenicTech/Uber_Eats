@@ -14,7 +14,7 @@ import awsconfig from "./src/aws-exports";
 import { withAuthenticator } from "aws-amplify-react-native";
 import AuthContextProvider from "./src/Contexts/AuthContext";
 import BasketContextProvider from "./src/Contexts/BasketContext";
-// import Amplify, { Auth } from 'aws-amplify';
+
 Amplify.configure({
   ...awsconfig,
   Analytics: {

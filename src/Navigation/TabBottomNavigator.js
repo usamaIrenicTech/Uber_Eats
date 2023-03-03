@@ -25,6 +25,7 @@ const HomeTabs = () => {
           tabBarIcon: ({ color }) => (
             <AntDesign name="solution1" size={24} color={color} />
           ),
+          headerShown:false
         }}
       />
       <Tab.Screen
