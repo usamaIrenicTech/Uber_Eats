@@ -13,46 +13,40 @@ import BasketDishItem from "../../componets/BasketDishItem";
 import { useNavigation } from "@react-navigation/native";
 import { Basket, BasketDis } from "../../models";
 import { DataStore } from "aws-amplify";
-const restaurants = restaurant[0];
+import { useBasketContext } from "../../Contexts/BasketContext";
+import { useOrderContext } from "../../Contexts/OrderContext";
+// const restaurants = restaurant[0];
+
 export default function Baskets() {
-  const [basket, setBasket] = useState([])
-  const navigation = useNavigation();
+
   const [quantity, setQuantity] = useState(0);
-  const getTotal = () => {
-    return (restaurants.d * quantity).toFixed(2);
-  };
-  console.log("BasketItem-->", basket)
-  // useEffect(()=>{
-  //   DataStore.query(Basket).then(setBasket)
-  // })
+
+  const navigation = useNavigation();
+
+  const {restaurant, basketDishes, totalPrice, baskisDishesRes} = useBasketContext();
+  const {createOrder} = useOrderContext();
+
+  // console.log("BasketItem-->", basket)
+  
   return (
     <View style={styles.parent_view}>
       <TouchableOpacity style={styles.arrow_left} activeOpacity={0.6} onPress={()=>navigation.goBack()}>
         <Ionicons name="arrow-back-sharp" size={22} color="#000" />
       </TouchableOpacity>
       {/* ITEM NAME */}
-      <Text style={styles.name}>{restaurants.name}</Text>
+      <Text style={styles.name}>{restaurant?.name}</Text>
       {/* ITEM TITLE */}
       <Text style={styles.item_title}>Your item</Text>
       <FlatList
-        data={restaurants.dishes}
+        data={basketDishes}
         renderItem={({ item, index }) => {
           return <BasketDishItem basketDish={item} dishNumber={index + 1} />;
         }}
       />
-      {/* SUBTOTAL VIEW */}
-      <View style={styles.subTotal_view}>
-        <Text style={styles.subTotal}>Subtotal</Text>
-        <Text style={styles.sub_Price}>$82938</Text>
-      </View>
-      {/* TOTAL VIEW */}
-      <View style={styles.total_view}>
-        <Text style={styles.total}>Total</Text>
-        <Text style={styles.total_Price}>$82938</Text>
-      </View>
+
       {/* NEXT BUTTON */}
-      <TouchableOpacity style={styles.button_view} activeOpacity={0.7}>
-        <Text style={styles.button}>Next &#8226; $ 7637 </Text>
+      <TouchableOpacity style={styles.button_view} activeOpacity={0.7} onPress={createOrder}>
+        <Text style={styles.button}>Create Order &#8226; $ {totalPrice.toFixed(2)}</Text>
       </TouchableOpacity>
     </View>
   );

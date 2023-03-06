@@ -15,7 +15,7 @@ export default function DistListItem({ dishes }) {
     >
       <View style={{ flex: 1 }}>
         <Text style={styles.name}>{dishes?.name}</Text>
-        <Text style={styles.description} numberOfLines>
+        <Text style={styles.description} numberOfLines={2}>
           {dishes?.description}
         </Text>
         <Text style={styles.price}>$ {dishes?.price}</Text>

@@ -32,7 +32,7 @@ export default function Profile() {
     } else {
       await createUser();
     }
-    navigation.goBack();
+    // navigation.goBack();
   };
 
   const updateUser = async () => {

@@ -1,14 +1,36 @@
 import { View, Text, StyleSheet } from "react-native";
-import React from "react";
+import React, {useEffect, useState} from "react";
+import { Dishes } from "../../models";
+import { DataStore } from "aws-amplify";
+
 
 export default function BasketDishItem({ basketDish, dishNumber }) {
+
+  const [basketDishes, setBasketDishes] = useState([])
+  // console.log(basketDish.Dishes)
+
+  const getBasketDish = async() => {
+    try{
+    const res = await basketDish.Dishes
+    // let a = res;
+    setBasketDishes(res);
+    // console.log("dishesRes-->",a)
+    }catch(e){
+      console.log(e.message)
+    }
+  };
+
+  useEffect(()=>{
+    getBasketDish();
+  }, []);
+
   return (
     <View style={styles.row}>
       <View style={styles.quantity_container}>
-        <Text>{dishNumber}</Text>
+        <Text>{basketDish.quantity}</Text>
       </View>
-      <Text style={styles.item_name}>{basketDish.name}</Text>
-      <Text style={styles.item_price}>$ {basketDish.price}</Text>
+      <Text style={styles.item_name}>{basketDishes?.name}</Text>
+      <Text style={styles.item_price}>$ {basketDishes?.price}</Text>
     </View>
   );
 }
@@ -28,7 +50,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginHorizontal: 5,
   },
-  itemName: {
+  item_name: {
     fontWeight: "500",
     color: "#000",
     marginLeft: 5,

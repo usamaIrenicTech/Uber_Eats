@@ -28,7 +28,7 @@ export default function RestaurantItem() {
 
   const navigation = useNavigation();
   const route = useRoute();
-  const {  setRestaurant: setBasketRestaurant, basket, basketDishes} = useBasketContext();
+  const {  setRestaurant: setBasketRestaurant, basket, basketDishes, baskisDishesRes } = useBasketContext();
   // console.log(dishes);
   // GET ID FROM HOME
   const id = route?.params?.id;
@@ -86,13 +86,20 @@ export default function RestaurantItem() {
       >
         <Ionicons name="arrow-back-sharp" size={22} color="#000" />
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Basket")}
+      {
+        basket && (
+          <TouchableOpacity
+        onPress={() => {
+          baskisDishesRes()
+          navigation.navigate("Basket")}}
         style={styles.btn}
         activeOpacity={0.7}
       >
         <Text style={styles.btn_text}>Open Basket ({basketDishes.length})</Text>
       </TouchableOpacity>
+        )
+      }
+      
     </View>
   );
 }
