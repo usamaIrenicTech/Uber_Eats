@@ -9,28 +9,28 @@ const AuthContextProvider = ({ children }) => {
   const [dbUser, setDbUser] = useState(null);
 
   const sub = authUser?.attributes?.sub;
+  console.log("sub-->", sub);
 
   useEffect(() => {
     Auth.currentAuthenticatedUser({ bypassCache: true }).then(setAuthUser);
   }, []);
+  console.log("authUser-->", authUser);
 
-  const getExistUser = async() => {
+  const getExistUser = async () => {
+    try {
+      const fetchUser = await DataStore.query(User);
+      console.log();
+      const getSubId = fetchUser.filter((item) => item.sub == sub);
 
-    const fetchUser = await DataStore.query(User)
-    const getSubId = fetchUser.filter((item)=>item.sub==sub)
-    .then((users)=>console.log("getSubId-->", users))
-    // console.log("getSubId-->", getSubId)
-    // setDbUser(getSubId[0]);
-
-  }
-
+      setDbUser(getSubId);
+    } catch (e) {
+      Alert.alert(e.message);
+    }
+  };
   useEffect(() => {
-    // const getUser =  DataStore.query(User, (user) => user.sub("eq", sub)).then((users) =>
-    //   setDbUser(users[0])
-    // );
-    // console.log("ExistsUser-->", getUser)
     getExistUser();
   }, [sub]);
+  console.log("dbUserAuth--->", dbUser);
 
   return (
     <AuthContext.Provider value={{ authUser, dbUser, sub, setDbUser }}>

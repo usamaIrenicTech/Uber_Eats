@@ -13,17 +13,25 @@ import {useBasketContext} from "../../Contexts/BasketContext"
 export default function DishDetails() {
   const [dish, setDish] = useState([]);
   const [quantity, setQuantity] = useState(1);
+
   console.log("DishItem-->",dish)
+
   const navigation = useNavigation();
   const route = useRoute();
   const id = route?.params?.id;
   const { addDishToBasket} = useBasketContext();
+
   const getTotal = () => {
     return (dish.price * quantity).toFixed(2);
   };
+
   const getDishes = async() => {
-    const dishItem = await DataStore.query(Dishes, id);
-    setDish(dishItem)
+    try{
+      const dishItem = await DataStore.query(Dishes, id);
+      setDish(dishItem)
+    }catch(e){
+      console.log(e.message)
+    }
   }
 
   useEffect(() => {
@@ -50,7 +58,7 @@ export default function DishDetails() {
         <TouchableOpacity
           activeOpacity={0.6}
           onPress={() => {
-            quantity > 0 ? setQuantity(quantity - 1) : null;
+            quantity > 1 ? setQuantity(quantity - 1) : null;
           }}
         >
           <AntDesign name="minuscircleo" size={60} color="black" />

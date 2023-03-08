@@ -23,7 +23,7 @@ const BasketContextProvider = ({ children }) => {
 
   const baskisDishesRes = async() => {
     try{
-    const res = await basketDishes[0].Dishes
+    const res = await basketDishes.map((item)=>item.Dishes)
     // let a = res;
     setForDishesPrice(res);
     }catch(e){
@@ -31,15 +31,10 @@ const BasketContextProvider = ({ children }) => {
     }
   };
 
-  // useEffect(()=>{
-  //   baskisDishesRes();
-  // }, [])
-  
   const totalPrice = basketDishes?.reduce(
     (sum, basketDish)=> sum * basketDish.quantity + forDishesPrice.price, restaurant?.deliveryFee
   )
-  console.log(totalPrice)
-     
+  console.log("totalPrice-->",totalPrice);
 
   const getExtBasket = async () => {
     const bask = await DataStore.query(Basket, (b) =>
@@ -79,15 +74,18 @@ const BasketContextProvider = ({ children }) => {
     }
   }, [basket]);
 
-  
- 
   const addDishToBasket = async (dish, quantity) => {
     console.log("addDishToBasket", dish, quantity);
     let theBasket = basket || (await createNewBasket());
-    const createBasDish = await DataStore.save(
-      new BasketDis({ quantity, Dishes: dish, basketID: theBasket.id })
-    );
-    setBasketDishes([...basketDishes, createBasDish]);
+    try{
+      const createBasDish = await DataStore.save(
+        new BasketDis({ quantity, Dishes: dish, basketID: theBasket.id })
+      );
+      setBasketDishes([...basketDishes, createBasDish]);
+    }catch(e){
+      console.log(e.message)
+    }
+    
   };
   
 

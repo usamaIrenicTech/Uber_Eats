@@ -16,13 +16,13 @@ import { User } from "../../models";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Profile() {
-
+  const { sub, setDbUser, dbUser } = useAuthContext();
   const [name, setName] = useState(dbUser?.name || "Name");
   const [address, setAddress] = useState(dbUser?.address || "Address");
   const [lat, setLat] = useState(dbUser?.lat  || "0");
   const [lng, setLng] = useState(dbUser?.lng  || "0");
 
-  const { sub, setDbUser, dbUser } = useAuthContext();
+  
 
   const navigation = useNavigation();
 

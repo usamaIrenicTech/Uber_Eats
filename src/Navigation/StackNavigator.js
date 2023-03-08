@@ -15,7 +15,7 @@ function StackNavigator() {
           dbUser? (
             <Stack.Screen name="HomeTabs" component={HomeTabs} options={{headerShown:false}}/>
           ):(
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown:false}}/>
+          <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown:false}}/>
 
           )
         }
