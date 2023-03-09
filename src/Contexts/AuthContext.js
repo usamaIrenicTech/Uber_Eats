@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import { Auth, DataStore } from "aws-amplify";
 import { User } from "../models";
+import { Alert } from "react-native";
 
 const AuthContext = createContext({});
 
@@ -17,15 +18,12 @@ const AuthContextProvider = ({ children }) => {
   console.log("authUser-->", authUser);
 
   const getExistUser = async () => {
-    try {
+    
       const fetchUser = await DataStore.query(User);
       console.log();
       const getSubId = fetchUser.filter((item) => item.sub == sub);
+      setDbUser(getSubId[0]);
 
-      setDbUser(getSubId);
-    } catch (e) {
-      Alert.alert(e.message);
-    }
   };
   useEffect(() => {
     getExistUser();

@@ -77,7 +77,7 @@ export default function DishDetails() {
         onPress={addToBasket}
       >
         <Text style={styles.button}>
-          add {quantity} to baskets &#8226; ($ {getTotal()}){" "}
+          add {quantity} to baskets &#8226; ($ {getTotal()})
         </Text>
       </TouchableOpacity>
     </View>

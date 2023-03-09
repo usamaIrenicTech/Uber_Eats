@@ -1,13 +1,15 @@
 import react from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image,} from "react-native";
 import { useNavigation } from "@react-navigation/native";
+
+const  DEFAULT_IMAGE = "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant1.jpeg"
 export default function RestaurantItem({ restaurant }) {
   const navigation = useNavigation();
   return (
     // Container
    
     <TouchableOpacity style={StyleSheet.container} activeOpacity={0.6} onPress={()=>navigation.navigate('Restaurant', {id:restaurant.id})}>
-      <Image style={styles.image} source={{ uri: restaurant.image }} />
+      <Image style={styles.image} source={{ uri: restaurant.image? restaurant.image:DEFAULT_IMAGE, }} />
       <View style={styles.row}>
     
       <Text style={styles.title}>{restaurant.name}</Text>

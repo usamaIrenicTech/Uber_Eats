@@ -22,8 +22,7 @@ export default function Profile() {
   const [lat, setLat] = useState(dbUser?.lat  || "0");
   const [lng, setLng] = useState(dbUser?.lng  || "0");
 
-  
-
+  console.log("dbUserProfile-->", dbUser)
   const navigation = useNavigation();
 
   const onSave = async () => {

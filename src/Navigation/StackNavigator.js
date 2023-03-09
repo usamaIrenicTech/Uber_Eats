@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 function StackNavigator() {
   const { dbUser } = useAuthContext();
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator>
         {/* <Stack.Screen name="HomeTabs" component={HomeTabs} options={{headerShown:false}}/>
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown:false}}/> */}
         {

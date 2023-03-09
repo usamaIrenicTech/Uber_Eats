@@ -16,7 +16,7 @@ export default function OrderDetails() {
 
   const route = useRoute();
   const id = route.params?.id;
-
+console.log("orderId-->", id)
   useEffect(()=>{
     getOrders(id);
   }, [])

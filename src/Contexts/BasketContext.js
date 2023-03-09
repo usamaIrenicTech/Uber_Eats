@@ -7,7 +7,6 @@ import { Alert } from "react-native";
 const BasketContext = createContext({});
 
 const BasketContextProvider = ({ children }) => {
-
   const [restaurant, setRestaurant] = useState(null);
   const [basket, setBasket] = useState(null);
   const [basketDishes, setBasketDishes] = useState([]);
@@ -15,26 +14,26 @@ const BasketContextProvider = ({ children }) => {
 
   const { dbUser } = useAuthContext();
 
-  console.log("BasketDish-->",basketDishes)
-  console.log("forPrice-->", forDishesPrice)
+  console.log("BasketDish-->", basketDishes);
+  console.log("forPrice-->", forDishesPrice);
   // console.log(basket);
   // console.log("dbUser-->", dbUser?.id);
   // console.log("RestaurantsBasket-->", restaurant);
 
-  const baskisDishesRes = async() => {
-    try{
-    const res = await basketDishes.map((item)=>item.Dishes)
-    // let a = res;
-    setForDishesPrice(res);
-    }catch(e){
-      console.log(e.message)
-    }
+  const baskisDishesRes = async () => {
+    const res = basketDishes.map((item) => item.Dishes);
+    await Promise.all(res)
+      .then((val) => {
+        return Promise.all(val.map((result) => setForDishesPrice(result)));
+      })
+      .catch((error) => console.log(error));
   };
 
   const totalPrice = basketDishes?.reduce(
-    (sum, basketDish)=> sum * basketDish.quantity + forDishesPrice.price, restaurant?.deliveryFee
-  )
-  console.log("totalPrice-->",totalPrice);
+    (sum, basketDish) => sum + basketDish.quantity * forDishesPrice?.price,
+    restaurant?.deliveryFee
+  );
+  console.log("totalPrice-->", totalPrice);
 
   const getExtBasket = async () => {
     const bask = await DataStore.query(Basket, (b) =>
@@ -67,27 +66,24 @@ const BasketContextProvider = ({ children }) => {
   useEffect(() => {
     if (basket) {
       // getExtBasDish();
-      DataStore.query(BasketDis, (bd) =>
-        bd.basketID("eq", basket.id))
+      DataStore.query(BasketDis, (bd) => bd.basketID("eq", basket.id))
         .then(setBasketDishes)
-        .catch((e)=>console.log(e.message));
+        .catch((e) => console.log(e.message));
     }
   }, [basket]);
 
   const addDishToBasket = async (dish, quantity) => {
     console.log("addDishToBasket", dish, quantity);
     let theBasket = basket || (await createNewBasket());
-    try{
+    try {
       const createBasDish = await DataStore.save(
         new BasketDis({ quantity, Dishes: dish, basketID: theBasket.id })
       );
       setBasketDishes([...basketDishes, createBasDish]);
-    }catch(e){
-      console.log(e.message)
+    } catch (e) {
+      console.log(e.message);
     }
-    
   };
-  
 
   const createNewBasket = async () => {
     const newBasket = await DataStore.save(
@@ -106,7 +102,7 @@ const BasketContextProvider = ({ children }) => {
         basket,
         basketDishes,
         totalPrice,
-        baskisDishesRes
+        baskisDishesRes,
       }}
     >
       {children}

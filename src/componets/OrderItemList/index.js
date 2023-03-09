@@ -1,17 +1,19 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, startsWith } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 
+const DEFAULT_IMAGE = "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant1.jpeg"
 export default function OrderItemList({order}) {
+  console.log("OrdersList-->", order)
 
   const navigation = useNavigation();
   return (
     <TouchableOpacity style={styles.parent_view} activeOpacity={0.6} onPress={()=>navigation.navigate('Order Details', {id:order.id})}>
-      <Image source={{uri:order?.image}} style={styles.image}/>
+      <Image source={{uri:order?.image? order?.image:DEFAULT_IMAGE}} style={styles.image}/>
       <View>
         <Text style={styles.order_name}>{order?.name}</Text>
-        <Text style={styles.order_quan_price}>Item 2 &#8226; $38.45 </Text>
-        <Text style={styles.order_status}>2 days ago &#8226; {order?.status}</Text>
+        <Text style={styles.order_quan_price}>Item 2 &#8226; ${order.total.toFixed(2)} </Text>
+        <Text style={styles.order_status}> 2 days ago &#8226; {order?.status}</Text>
       </View>
     </TouchableOpacity>
   )
@@ -31,7 +33,8 @@ const styles = StyleSheet.create({
     image:{
       width:75,
       height:75,
-      marginRight:10
+      marginRight:10,
+      borderRadius:10
     },
     order_name:{
       fontWeight:'700',

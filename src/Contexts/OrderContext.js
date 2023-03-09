@@ -8,26 +8,44 @@ const OrderContext = createContext({});
 
 const OrderContextProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
+  const [orderDishes, setOrderDishes] = useState([]);
 
   const { dbUser } = useAuthContext();
   const { restaurant, totalPrice, basketDishes, basket } = useBasketContext();
 
+  // console.log("OrderDishes--->", orderDishes)
+  // GET ORDER DISHES
+  const orderDishesRes = async () => {
+    const res = basketDishes.map((item) => item.Dishes);
+    await Promise.all(res)
+      .then((val) => {
+        return Promise.all(val.map((result) => setOrderDishes(result)));
+      })
+      .catch((error) => console.log(error));
+  }
+  
+  console.log("DbUserOrders-->", dbUser)
+
+  // console.log("basketDishesOrder-->",basketDishes)
   useEffect(() => {
-    DataStore.query(Order)
+    DataStore.query(Order, (o)=> o.userID("eq", dbUser.id))
       .then(setOrders)
       .catch((e) => e.message);
-  }, []);
+  }, [dbUser]);
 
+    // CREATE ORDER 
   const createOrder = async () => {
-    // CREATE ORDER
-    const newOrder = await DataStore.save(
-      new Order({
-        userID: dbUser.id,
-        Restaurants: restaurant,
-        status: "NEW",
-        total: totalPrice,
-      })
-    );
+      var newOrder = await DataStore.save(
+        new Order({
+          userID: dbUser.id,
+          Restaurants: restaurant,
+          status: "NEW",
+          total: totalPrice,
+        })
+      );
+    
+    
+
     // ADD ALL BASKET DISHES TO THE ORDER
     await Promise.all(
       basketDishes.map((basketDish) => {
@@ -35,13 +53,14 @@ const OrderContextProvider = ({ children }) => {
           new OrderDish({
             quantity: basketDish.quantity,
             orderID: newOrder.id,
-            Dishes: basketDish?.Dishes,
+            Dishes: orderDishes
           })
         );
       })
     );
+
     // DELETE THE BASKET
-    await DataStore.delete(basket);
+    // await DataStore.delete(basket);
 
     setOrders([...orders, newOrder]);
   };
@@ -50,11 +69,11 @@ const OrderContextProvider = ({ children }) => {
     const order = await DataStore.query(Order, id);
     const orderDishes = await DataStore.query(OrderDish, (od) =>
       od.orderID("eq", id)
-    );
+    ).then((res)=>console.log("OrderDishRes--->",res));
     return { ...order, Dishes: orderDishes };
   };
   return (
-    <OrderContext.Provider value={{ createOrder, orders, getOrders }}>
+    <OrderContext.Provider value={{ createOrder, orders, getOrders, orderDishesRes }}>
       {children}
     </OrderContext.Provider>
   );

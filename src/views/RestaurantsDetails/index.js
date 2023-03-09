@@ -20,7 +20,7 @@ import { useRoute } from "@react-navigation/native";
 import { DataStore } from "aws-amplify";
 import { Restaurants, Dishes } from "../../models";
 import { useBasketContext } from "../../Contexts/BasketContext";
-
+import { useOrderContext } from "../../Contexts/OrderContext";
 
 export default function RestaurantItem() {
   const [restaurant, setRestaurant] = useState([]);
@@ -29,6 +29,7 @@ export default function RestaurantItem() {
   const navigation = useNavigation();
   const route = useRoute();
   const {  setRestaurant: setBasketRestaurant, basket, basketDishes, baskisDishesRes } = useBasketContext();
+  const {orderDishesRes} = useOrderContext();
   // console.log(dishes);
   // GET ID FROM HOME
   const id = route?.params?.id;
@@ -90,7 +91,8 @@ export default function RestaurantItem() {
         basket && (
           <TouchableOpacity
         onPress={() => {
-          baskisDishesRes()
+          baskisDishesRes();
+          orderDishesRes();
           navigation.navigate("Basket")}}
         style={styles.btn}
         activeOpacity={0.7}
