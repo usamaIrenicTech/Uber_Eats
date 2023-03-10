@@ -4,16 +4,17 @@ import { Dishes } from "../../models";
 import { DataStore } from "aws-amplify";
 
 
-export default function BasketDishItem({ basketDish, dishNumber }) {
+export default function BasketDishItem({ basketDish}) {
 
   const [basketDishes, setBasketDishes] = useState([])
-  // console.log(basketDish.Dishes)
+  console.log(basketDish.Dishes)
 
   const getBasketDish = async() => {
     try{
     const res = await basketDish.Dishes
-    // let a = res;
     setBasketDishes(res);
+    // let a = res;
+    // setBasketDishes(res);
     // console.log("dishesRes-->",a)
     }catch(e){
       console.log(e.message)

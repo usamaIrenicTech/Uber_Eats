@@ -4,8 +4,9 @@ import styles from "../../views/OrdersDetails/styles";
 import Orders from "../../data/orders.json";
 
 const order = Orders[0];
-export default function OrderDetailsHeader() {
-  return (
+export default function OrderDetailsHeader({orders}) {
+  console.log("OrderDetHead-->", orders)
+  return (   
     <View style={styles.parent_view}>
       <Image
         style={styles.image}

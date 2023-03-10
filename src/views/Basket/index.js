@@ -25,6 +25,10 @@ export default function Baskets() {
 
   const {restaurant, basketDishes, totalPrice, baskisDishesRes} = useBasketContext();
   const {createOrder} = useOrderContext();
+  const onCreateOrder = async() => {
+    createOrder();
+    navigation.goBack();
+  }
 
   // console.log("BasketItem-->", basket)
   
@@ -45,7 +49,7 @@ export default function Baskets() {
       />
 
       {/* NEXT BUTTON */}
-      <TouchableOpacity style={styles.button_view} activeOpacity={0.7} onPress={createOrder}>
+      <TouchableOpacity style={styles.button_view} activeOpacity={0.7} onPress={onCreateOrder}>
         <Text style={styles.button}>Create Order &#8226; $ {totalPrice.toFixed(2)}</Text>
       </TouchableOpacity>
     </View>

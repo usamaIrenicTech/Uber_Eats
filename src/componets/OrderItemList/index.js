@@ -1,12 +1,27 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, startsWith } from 'react-native'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { useNavigation } from '@react-navigation/native'
+import { Order } from '../../models';
 
 const DEFAULT_IMAGE = "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant1.jpeg"
 export default function OrderItemList({order}) {
-  console.log("OrdersList-->", order)
+  const [orderRestaurant, setOrderRestaurant] = useState([])
+  // setOrderRestaurant(order)
+  console.log("OrderRestau-->", orderRestaurant)
+  console.log("OrdersList-->", order);
 
   const navigation = useNavigation();
+
+  const getRestaurant = async(order) => {
+    
+    const res = await order.map((item)=>item.Restaurants)
+   await Promise.all(res).then((val)=>{
+     return Promise.all(val.map((item)=>setOrderRestaurant(item)))
+   }).catch((error) => console.log(error));
+  };
+  useEffect(()=>{
+    getRestaurant(order);
+  }, [])
   return (
     <TouchableOpacity style={styles.parent_view} activeOpacity={0.6} onPress={()=>navigation.navigate('Order Details', {id:order.id})}>
       <Image source={{uri:order?.image? order?.image:DEFAULT_IMAGE}} style={styles.image}/>
